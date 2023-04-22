@@ -30,12 +30,12 @@ class PostURLTests(TestCase):
             author=cls.user,
             text='Тестовый пост',
         )
-    
+
     def setUp(self):
         self.guest_client = Client()
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
-       
+
     def test_home_url_exists_at_desired_location(self):
         """Страница / доступна любому пользователю."""
         response = self.guest_client.get('/')
@@ -67,11 +67,9 @@ class PostURLTests(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_post_edit_url_exists_at_desired_location(self):
-        """Страница /posts/<int:post_id>/edit/ доступна авторизованному пользователю."""
         response = self.authorized_client.get(f'/posts/{self.post.pk}/edit/')
         self.assertEqual(response.status_code, 200)
 
     def test_post_edit_url_redirect_anonymous(self):
-        """Страница /posts/<int:post_id>/edit/ перенаправляет анонимного пользователя."""
         response = self.guest_client.get(f'/posts/{self.post.pk}/edit/')
         self.assertEqual(response.status_code, 302)
