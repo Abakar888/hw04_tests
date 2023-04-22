@@ -36,8 +36,7 @@ class PostCreateFormTests(TestCase):
         response = self.authorized_client.post(
             reverse('posts:post_create'),
             data=form_data,
-            follow=True,
-        )
+            follow=True,)
         self.assertRedirects(response,
                              reverse('posts:profile',
                                      kwargs={'username': self.post.author}))
