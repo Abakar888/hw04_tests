@@ -33,4 +33,4 @@ class UserCreateFormTests(TestCase):
         new_user = User.objects.latest('id')
         self.assertEqual(new_user.username, form_data['username'])
         self.assertRedirects(response, reverse('posts:index'))
-        self.assertEqual(User.objects.count(), users_count+1)
+        self.assertEqual(User.objects.count(), users_count + 1)
