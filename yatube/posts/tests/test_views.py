@@ -59,11 +59,9 @@ class PostViewsTests(TestCase):
             'group': forms.fields.ChoiceField,
         }
 
-
     def setUp(self):
         self.authorized_client = Client()
         self.authorized_client.force_login(self.author)
-
 
     def test_pages_uses_correct_template(self):
         """Проверка шаблонов."""
@@ -71,7 +69,6 @@ class PostViewsTests(TestCase):
             with self.subTest(reverse_name=reverse_name):
                 response = self.authorized_client.get(reverse_name)
                 self.assertTemplateUsed(response, template)
-
 
     def assert_post(self, post):
         """Функция проверки контекста"""
@@ -83,12 +80,10 @@ class PostViewsTests(TestCase):
             self.assertEqual(
                 post.group, self.post.group)
 
-
     def test_index_page_show_correct_context(self):
         """Проверка index с правильным ли context."""
         response = self.authorized_client.get(reverse('posts:index'))
         self.assert_post(response.context['page_obj'][0])
-
 
     def test_group_list_page_show_correct_context(self):
         """Проверка group_list с правильным ли context."""
@@ -101,7 +96,6 @@ class PostViewsTests(TestCase):
         self.assertEqual(response.context['group'], self.group)
         self.assert_post(response.context['page_obj'][0])
 
-
     def test_profile_page_show_correct_context(self):
         """Проверка profile с правильным ли context."""
         response = self.authorized_client.get(
@@ -113,7 +107,6 @@ class PostViewsTests(TestCase):
         self.assertEqual(response.context['author'], self.author)
         self.assert_post(response.context['page_obj'][0])
 
-
     def test_detail_page_show_correct_context(self):
         """Проверка post_detail с правильниым ли context."""
         response = self.authorized_client.get(
@@ -124,7 +117,6 @@ class PostViewsTests(TestCase):
         )
         self.assert_post(response.context['post'])
 
-
     def test_post_create_page_show_correct_context(self):
         """Шаблон post_create сформирован с правильным контекстом."""
         response = self.authorized_client.get(reverse('posts:post_create'))
@@ -134,7 +126,6 @@ class PostViewsTests(TestCase):
             with self.subTest(value=value):
                 form_field = form.fields.get(value)
                 self.assertIsInstance(form_field, expected)
-
 
     def test_post_edit_page_show_correct_context(self):
         """Шаблон post_edit сформирован с правильным контекстом."""
@@ -183,11 +174,9 @@ class PostViewsTests(TestCase):
                     'posts/group_list.html',
         }
 
-
     def setUp(self):
         self.authorized_client = Client()
         self.authorized_client.force_login(self.author)
-
 
     def test_new_post_is_shown(self):
         """Проверьте, что если при создании поста указать группу,
@@ -222,7 +211,6 @@ class PaginatorViewsTest(TestCase):
                 author=cls.author,
                 group=cls.group
             )
-
 
     def test_paginator_on_pages(self):
         """Проверка пагинации на страницах."""
