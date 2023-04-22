@@ -6,6 +6,7 @@ from posts.models import Post, Group
 
 User = get_user_model()
 
+
 class StaticURLTests(TestCase):
     def setUp(self):
         self.guest_client = Client()
@@ -13,6 +14,7 @@ class StaticURLTests(TestCase):
     def test_homepage(self):
         response = self.guest_client.get('/')
         self.assertEqual(response.status_code, 200)
+
 
 class PostURLTests(TestCase):
     @classmethod
@@ -67,13 +69,11 @@ class PostURLTests(TestCase):
     def test_post_edit_url_exists_at_desired_location(self):
         """Страница /posts/<int:post_id>/edit/ доступна авторизованному пользователю."""
         response = self.authorized_client.get(
-            f'/posts/{self.post.pk}/edit/'
-            )
+                        f'/posts/{self.post.pk}/edit/')
         self.assertEqual(response.status_code, 200)
 
     def test_post_edit_url_redirect_anonymous(self):
         """Страница /posts/<int:post_id>/edit/ перенаправляет анонимного пользователя."""
         response = self.guest_client.get(
-            f'/posts/{self.post.pk}/edit/'
-            )
+            f'/posts/{self.post.pk}/edit/')
         self.assertEqual(response.status_code, 302)

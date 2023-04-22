@@ -38,13 +38,13 @@ class PostCreateFormTests(TestCase):
             data=form_data,
             follow=True,
         )
-        self.assertRedirects(response, 
-                             reverse('posts:profile', 
+        self.assertRedirects(response,
+                             reverse('posts:profile',
                                      kwargs={'username': self.post.author}))
-        self.assertEqual(Post.objects.count(), posts_count+1)
+        self.assertEqual(Post.objects.count(), posts_count + 1)
         self.assertTrue(
             Post.objects.filter(
-                text = form_data['text'],
-                group = form_data['group'],
+                text=form_data['text'],
+                group=form_data['group'],
             ).exists()
         )
