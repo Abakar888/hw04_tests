@@ -41,7 +41,7 @@ class PostModelTest(TestCase):
         post = PostModelTest.post
         field_help_texts = {
             'group': ('Группа, к которой'
-                     'будет относиться пост'),
+                    'будет относиться пост'),
             'text': 'Введите текст поста',
         }
         for field, expected_value in field_help_texts.items():

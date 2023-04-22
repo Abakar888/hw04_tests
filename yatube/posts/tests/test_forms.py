@@ -22,12 +22,10 @@ class PostCreateFormTests(TestCase):
             text='Тестовый пост',
         )
 
-
     def setUp(self):
         self.guest_client = Client()
         self.authorized_client = Client()
         self.authorized_client.force_login(self.post.author)
-
 
     def test_post_create(self):
         posts_count = Post.objects.count()
@@ -38,7 +36,7 @@ class PostCreateFormTests(TestCase):
         response = self.authorized_client.post(
             reverse('posts:post_create'),
             data=form_data,
-            follow=True
+            follow=True,
         )
         self.assertRedirects(response, reverse('posts:profile', kwargs={'username': self.post.author}))
         self.assertEqual(Post.objects.count(), posts_count+1)
