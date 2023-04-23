@@ -1,7 +1,6 @@
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from posts.forms import PostForm
 from posts.models import Post, Group, User
 
 
@@ -10,25 +9,20 @@ class PostCreateFormTests(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.user = User.objects.create_user(username='auth')
-        cls.form = PostForm()
-
-        cls.group = Group.objects.create(
-            title='Тестовая группа',
-            slug='test-slug',
-            description='Тестовое описание',
-        )
         cls.post = Post.objects.create(
             author=cls.user,
             text='Тестовый пост',
         )
-
-    def setUp(self):
-        self.guest_client = Client()
-        self.authorized_client = Client()
-        self.authorized_client.force_login(self.post.author)
+        cls.authorized_client = Client()
+        cls.authorized_client.force_login(cls.post.author)
 
     def test_post_create(self):
         posts_count = Post.objects.count()
+        self.group = Group.objects.create(
+            title='Тестовая группа',
+            slug='test-slug',
+            description='Тестовое описание',
+        )
         form_data = {
             'group': self.group.id,
             'text': 'Тестовый пост',
@@ -41,9 +35,15 @@ class PostCreateFormTests(TestCase):
                              reverse('posts:profile',
                                      kwargs={'username': self.post.author}))
         self.assertEqual(Post.objects.count(), posts_count + 1)
-        self.assertTrue(
-            Post.objects.filter(
-                text=form_data['text'],
-                group=form_data['group'],
-            ).exists()
-        )
+        post = Post.objects.latest('id')
+        self.assertEqual(post.text, form_data['text'])
+        self.assertEqual(post.author, self.post.author)
+        self.assertEqual(post.group.pk, form_data['group'])
+
+    def test_post_create_anonymous(self):
+        response = self.client.get('/create/')
+        self.assertEqual(response.status_code, 302)
+
+    def test_post_edit_anonymous(self):
+        response = self.client.get(f'/posts/{self.post.pk}/edit/')
+        self.assertEqual(response.status_code, 302)

@@ -179,12 +179,6 @@ class PostViewsTests(TestCase):
         self.authorized_client.force_login(self.author)
 
     def test_new_post_is_shown(self):
-        """Проверьте, что если при создании поста указать группу,
-        то этот пост появляется:
-        -- на главной странице сайта,
-        -- на странице выбранной группы,
-        -- в профайле пользователя.
-        """
         for url in self.post_create_urls:
             with self.subTest(value=url):
                 response = self.client.get(url)
@@ -205,12 +199,14 @@ class PaginatorViewsTest(TestCase):
         )
         cls.posts_on_first_page = 10
         cls.posts_on_second_page = 3
-        for i in range(cls.posts_on_second_page + cls.posts_on_first_page):
-            Post.objects.create(
-                text=f'Пост №{i}',
+        Post.objects.bulk_create([
+            Post(
                 author=cls.author,
-                group=cls.group
+                text=f'Пост №{i}',
+                group=cls.group,
             )
+        for i in range(cls.posts_on_first_page + cls.posts_on_second_page)
+        ])
 
     def test_paginator_on_pages(self):
         """Проверка пагинации на страницах."""
