@@ -1,7 +1,7 @@
-from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from ..models import Group, Post, User
+
 
 class GroupModelTest(TestCase):
     @classmethod
@@ -18,6 +18,7 @@ class GroupModelTest(TestCase):
         group = self.group
         expected_object_name = group.title
         self.assertEqual(expected_object_name, str(group))
+
 
 class PostModelTest(TestCase):
     @classmethod

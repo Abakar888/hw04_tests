@@ -205,7 +205,7 @@ class PaginatorViewsTest(TestCase):
                 text=f'Пост №{i}',
                 group=cls.group,
             )
-        for i in range(cls.posts_on_first_page + cls.posts_on_second_page)
+            for i in range(cls.posts_on_first_page + cls.posts_on_second_page)
         ])
 
     def test_paginator_on_pages(self):
