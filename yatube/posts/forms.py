@@ -14,7 +14,7 @@ class CreationForm(UserCreationForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('text', 'group')
+        fields = ('text', 'group', 'image')
         help_texts = {
             'text': 'Введите текст сообщения',
             'group': 'Выберите группу',

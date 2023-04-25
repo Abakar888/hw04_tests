@@ -1,5 +1,6 @@
 from django.test import Client, TestCase
 from django.urls import reverse
+from http import HTTPStatus
 
 from posts.models import Post, Group, User
 
@@ -42,8 +43,8 @@ class PostCreateFormTests(TestCase):
 
     def test_post_create_anonymous(self):
         response = self.client.get('/create/')
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def test_post_edit_anonymous(self):
         response = self.client.get(f'/posts/{self.post.pk}/edit/')
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
